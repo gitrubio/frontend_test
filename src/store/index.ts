@@ -1,2 +1,2 @@
-export { authSlice } from './auth'
-export { store } from './store'
+export * from './auth'
+export * from './store'

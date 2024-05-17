@@ -1,6 +1,6 @@
-import { authEnum } from "../constants/auth.const"
-import { PublicRoutes } from "../routes/models/routes.model"
-import { useAppSelector } from "../store/store"
+import { authEnum } from "@/constants/auth.const"
+import { PublicRoutes } from "@/routes/models/routes.model"
+import { useAppSelector } from "@/store/store"
 import { Navigate, Outlet } from "react-router-dom"
 
 export const AuthGuard = () => {
