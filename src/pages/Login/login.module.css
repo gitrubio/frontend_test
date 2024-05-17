@@ -1,0 +1,7 @@
+.container {
+    padding-top: rem(80px);
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
