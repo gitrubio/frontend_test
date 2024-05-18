@@ -1,9 +1,9 @@
 import { Table, Group, Button, Center } from '@mantine/core';
-import { IProducts } from '@/types/products.type';
+import { TableProductsProps } from '@/types';
 import { MdModeEdit, MdDelete  } from "react-icons/md";
 
 
-export function TableProducts({ products , openDrawer}: { products: IProducts[], openDrawer: (product: IProducts, type: 'edit'| 'create') => void}) {
+export function TableProducts({ products , openDrawer,deleteProduct}: TableProductsProps) {
     const rows = products.map((product) => {
         return (
             <Table.Tr key={product.Handle}>
@@ -24,7 +24,7 @@ export function TableProducts({ products , openDrawer}: { products: IProducts[],
                         <Button onClick={()=>openDrawer(product,'edit')} size="xs"  color="orange" variant="light">
                             <MdModeEdit/>
                         </Button>
-                        <Button size="xs" color="red" variant="light">
+                        <Button  onClick={()=>deleteProduct(product.id)} size="xs" color="red" variant="light">
                             <MdDelete/>
                         </Button>
                     </Group>

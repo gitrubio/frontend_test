@@ -5,10 +5,12 @@ import React, { useEffect, useState } from 'react'
 import { Editor } from '../Editor/Editor';
 import useProducts from '@/hooks/useProducts';
 import { notifications } from '@mantine/notifications';
+import { DrawerProps } from '@/types';
+import { textMessage } from './utils';
 
-export default function DrawerEdit({close,opened,currentProduct,type, onFinished}: { type: 'edit' | 'create', opened: boolean; close: () => void, currentProduct : IProducts | null, onFinished: () => void}){
+export default function DrawerEdit({close,opened,currentProduct,type, onFinished}: DrawerProps ){
   const [newDescription,setNewDescription] = useState<string>('')  
-  const {editProduct,loader} = useProducts()
+  const {editProduct,loader, createProduct} = useProducts()
   const form = useForm({
         initialValues: {
           Title:  '',
@@ -19,19 +21,14 @@ export default function DrawerEdit({close,opened,currentProduct,type, onFinished
           Price:  0,
           CompareAtPrice:  0,
           Barcode: '',
-        },
-    
-        validate: {
-          Title: (val) => (val.trim().length > 4 ? null : 'Title is too short'),
-          Description: (val) => (val.trim().length > 10 ? 'Description is too short' : null),
-        },
+        }
       });
+
       useEffect(() => {
         form.setValues({
           Title: currentProduct?.Title || '',
-          Description: currentProduct?.Description || '',
           SKU: currentProduct?.SKU ||'',
-          Grams: currentProduct?.Grams || 1,
+          Grams: currentProduct?.Grams || 0,
           Stock: currentProduct?.Stock || 0,
           Price: currentProduct?.Price || 0,
           CompareAtPrice: currentProduct?.CompareAtPrice || 0,
@@ -40,21 +37,25 @@ export default function DrawerEdit({close,opened,currentProduct,type, onFinished
       }, [currentProduct])
 
       const submit = async () => {
-        console.log('form.values',form.values)
-        console.log('description',newDescription)
         const product : Partial<IProducts> = {
           ...form.values,
           Description: newDescription
         }
-       const res =  await editProduct(currentProduct?.id || '',product)
+        let res = false
+        if(type === 'create'){
+          res =  await createProduct(product)
+        }else {
+         res =  await editProduct(currentProduct?.id || '',product)
+        }
        if(res){
-          notifications.show({title: 'Product updated',message: 'Product has been updated',color: 'blue'})
+          notifications.show({title: textMessage[type].title,message: textMessage[type].message,color: 'blue'})
            close()
+           onFinished()
        }else{
-          notifications.show({title: 'Error',message: 'Error updating product',color: 'red'})
+          notifications.show({title: 'Error',message: 'Error process',color: 'red'})
        }
-       onFinished()
       }
+
     return (
     <Drawer size={'lg'} withCloseButton={false} opened={opened} onClose={close}   position={type === 'edit' ? 'left' : 'right'}>
         
@@ -65,8 +66,7 @@ export default function DrawerEdit({close,opened,currentProduct,type, onFinished
             label="Title"
             placeholder="Title of product"
             value={form.values.Title}
-            onChange={(event) => form.setFieldValue('Title', event.currentTarget.value)}
-            error={form.errors.name && 'user is too short'}
+            onChange={(event) => form.setFieldValue('Title', event.currentTarget.value.toUpperCase())}
             radius="md"
           />
         
@@ -75,10 +75,9 @@ export default function DrawerEdit({close,opened,currentProduct,type, onFinished
         <TextInput
           required
           label="SKU"
-        
           value={form.values.SKU}
           onChange={(event) => form.setFieldValue('SKU', event.currentTarget.value)}
-          error={form.errors.email && 'Invalid email'}
+        
           radius="md"
         />
 
@@ -87,7 +86,6 @@ export default function DrawerEdit({close,opened,currentProduct,type, onFinished
           label="Grams"
           value={form.values.Grams}
           onChange={(value) => form.setFieldValue('Grams',+value)}
-          error={form.errors.password && 'Password should include at least 6 characters'}
           radius="md"
         />
         </SimpleGrid>
@@ -98,7 +96,6 @@ export default function DrawerEdit({close,opened,currentProduct,type, onFinished
             label="Stock"
             value={form.values.Stock}
             onChange={(value) => form.setFieldValue('Stock',  +value)}
-            error={form.errors.password && 'Password should include at least 6 characters'}
             radius="md"
         />
         <NumberInput
@@ -106,7 +103,6 @@ export default function DrawerEdit({close,opened,currentProduct,type, onFinished
             label="Price"
             value={form.values.Price}
             onChange={(value) => form.setFieldValue('Price',  +value)}
-            error={form.errors.password && 'Password should include at least 6 characters'}
             radius="md"
         />
         </SimpleGrid>
@@ -117,7 +113,6 @@ export default function DrawerEdit({close,opened,currentProduct,type, onFinished
             label="CompareAtPrice"
             value={form.values.CompareAtPrice}
             onChange={(value) => form.setFieldValue('CompareAtPrice',   +value)}
-            error={form.errors.password && 'Password should include at least 6 characters'}
             radius="md"
         />
         <TextInput
@@ -125,13 +120,13 @@ export default function DrawerEdit({close,opened,currentProduct,type, onFinished
           label="Barcode"
           value={form.values.Barcode}
           onChange={(event) => form.setFieldValue('Barcode', event.currentTarget.value)}
-          error={form.errors.password && 'Password should include at least 6 characters'}
           radius="md"
         />
        </SimpleGrid>
        
         <label>Description</label>
-        {opened && <Editor content={form.values.Description} setDescription={setNewDescription}/>}
+        <Editor content={currentProduct?.Description || ''} setDescription={setNewDescription}/>
+
         <SimpleGrid cols={2} mt={20}>
           <Button onClick={close} color="gray" variant="outline" loading={loader} >Cancel</Button>
           <Button color="blue" type="submit" onClick={()=>submit()} loading={loader}  >Save</Button>

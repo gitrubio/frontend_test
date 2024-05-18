@@ -9,10 +9,6 @@ export const API = axios.create({
     
 });
 
-export const setAuthToken = (token: string) => {
-    API.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-};
-
 
 export const getError = (status: number) => {
     switch (status) {
