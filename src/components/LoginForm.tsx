@@ -28,6 +28,7 @@ export function LoginForm(props: PaperProps) {
 
     validate: {
       name: (val) => (val.trim().length > 4 ? null : 'Name is too short'),
+      email: (val) => ( type === 'login' ? null : (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)  ? null : 'Invalid email') ),
       password: (val) => (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(val) ? null : 'Password must have at least 8 characters and contain at least one number and one letter and one uppercase letter'),
     },
   });
