@@ -1,0 +1,17 @@
+.progressSection {
+    &:not(:first-of-type) {
+      border-left: rem(3px) solid light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    }
+  }
+
+  .truncate {
+    display: inline-block;
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+    @media screen and (max-width: 768px) {
+      max-width: 100px;
+    }
+  }

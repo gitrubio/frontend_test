@@ -1,13 +1,15 @@
 import React from 'react'
-import { createTheme, MantineProvider } from '@mantine/core';
-import ReactDOM from 'react-dom/client'
 import { store } from '@/store';
+import { createTheme, MantineProvider } from '@mantine/core';
 import { Provider } from 'react-redux';
+import { Notifications } from '@mantine/notifications';
+import ReactDOM from 'react-dom/client'
+
 import App from '@/routes/App.route.tsx'
 
 import '@mantine/notifications/styles.css';
 import '@mantine/core/styles.css';
-import { Notifications } from '@mantine/notifications';
+import '@mantine/tiptap/styles.css';
 
 const theme = createTheme({ 
 
