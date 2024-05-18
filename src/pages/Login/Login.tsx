@@ -19,7 +19,7 @@ export default function Login() {
                     <li></li>
                 </ul>
             </div >
-                <LoginForm maw={400} className={classes.form} />
+                <LoginForm maw={350} className={classes.form} />
         </Container>
     )
 }

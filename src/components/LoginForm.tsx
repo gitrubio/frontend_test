@@ -78,7 +78,7 @@ export function LoginForm(props: PaperProps) {
             placeholder="Your password"
             value={form.values.password}
             onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
-            error={form.errors.password && 'Password should include at least 6 characters'}
+            error={form.errors.password && 'Password must have at least 8 characters and contain at least one number and one letter and one uppercase letter'}
             radius="md"
           />
 
