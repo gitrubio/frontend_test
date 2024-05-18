@@ -32,7 +32,6 @@ export function LoginForm(props: PaperProps) {
     },
   });
   const submit = () => { 
-    console.log('form.values',form.values)
     if (type === 'login') {
       login(form.values)
     } else {

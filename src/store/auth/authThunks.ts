@@ -16,7 +16,6 @@ export const authLogin = (user: IAuth,setLoader:  React.Dispatch<React.SetStateA
     return async (dispatch: any) => {
         setLoader(true)
         const { data, status } = await AuthService.login(user)
-        console.log(data,status)
         if (status === 201) {
             welcomeMessage()
             dispatch(
@@ -50,7 +49,6 @@ export const authRegister = (user: IUser,setLoader:  React.Dispatch<React.SetSta
                 })
             )
         }else{
-            console.log(data,status)
             notifications.show({
                 title: 'Error al registrar',
                 message: 'El usuario ya existe',

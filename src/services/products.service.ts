@@ -5,8 +5,6 @@ export const ProductService = {
 
     async getAll(token: string | null, title: string = '', offset: number = 0, logout: () => void): Promise<ProductResponse> {
         try {
-            console.log('token', token);
-
             const { status, data } = (await API.get<ProductResponse>(`/products?title=${title}&offset=${offset}&limit=10`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
